@@ -132,17 +132,10 @@ namespace {
         DWORD cbNeeded;
         if (EnumProcessModules(hProcess, hMods, sizeof(hMods), &cbNeeded)) {
             for (int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++) {
-                TCHAR modNameTChar[MAX_PATH];
-
                 // Get the full path to the module's file.
-
-                if (GetModuleFileNameEx(hProcess, hMods[i], modNameTChar, sizeof(modNameTChar) / sizeof(TCHAR))) {
-#ifdef UNICODE
-                    std::wstring wString(modNameTChar);
-                    std::string modName(wString.begin(), wString.end());
-#else
-                    std::string modName(modNameTChar);
-#endif
+                char modNameCharArray[MAX_PATH];
+                if (GetModuleFileNameExA(hProcess, hMods[i], modNameCharArray, sizeof(modNameCharArray) / sizeof(char))) {
+                    std::string modName(modNameCharArray);
                     MODULEINFO info;
                     if (GetModuleInformation(hProcess, hMods[i], &info, sizeof(MODULEINFO))) {
                         std::map<uint64_t, uint64_t> modInfo;
