@@ -22,7 +22,7 @@
 #include <vector>
 #include <mutex>
 #include <iomanip>
-#include <Psapi.h>
+#include <psapi.h>
 #include <tlhelp32.h>
 #include <g3log/g3log.hpp>
 
